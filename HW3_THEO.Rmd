@@ -1,0 +1,482 @@
+---
+title: \textbf {BIOSTAT 274 Spring 2021 Homework 3}
+subtitle: \textbf{Due 11:59 PM 5/23/2020}
+author: "Zian ZHUANG"
+output:
+  pdf_document: default
+  html_document: default
+urlcolor: blue      
+header-includes: \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ISLR)
+library(tidyverse)
+```
+\theoremstyle{definition}
+\newtheorem*{hint}{Hint}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+## Theoretical Part
+
+## Q1. 
+
+### a.
+
+**Answer**:
+
+Firstly, we can calculate the average value of each column,
+
+$$
+\begin{aligned}       
+col_1=\frac{1-1+2+2}{4}=1\\
+col_2=\frac{2+2+1-1}{4}=1
+\end{aligned}
+$$
+Then we subtract each column with average and get,
+$$
+\begin{aligned}       
+X=\left(                 
+  \begin{array}{cc}   
+    0 & 1 \\  
+    -2 & 1 \\ 
+    1 & -2 \\
+    1 & 0 \\
+  \end{array}
+\right)                 
+\end{aligned}
+$$
+
+### b.
+
+**Answer**:
+
+To calculate the PCs ($v_1, v_2$), we need to maximize the $v^TX^TXv$ with the constraint $v^Tv=1$, i.e. we need to maximize $v^TX^TXv-\lambda(v^Tv-1)$. Apply the Lagrangian method, we have,
+
+$$
+\begin{aligned}       
+\frac{\partial}{\partial v}&=(X^TX-\lambda I)v=0 \Longrightarrow  X^TXv=\lambda v\\
+\frac{\partial}{\partial \lambda}&=v^Tv-1=0
+\end{aligned}
+$$
+
+plug in the centered matrix $X_0$, we have 
+
+$$
+\begin{aligned}       
+  X^TXv&=\lambda v\\
+  \left(                 
+  \begin{array}{cc}   
+    6 & -4 \\  
+    -4 & 6 \\
+  \end{array}
+\right)v &= \lambda v
+\end{aligned}
+$$
+
+Then set $v=(a,b)$, we know,
+
+$$
+\begin{aligned} 
+&\left\{
+\begin{array} {c}  
+    6a-4b=\lambda a \\  
+    -4a+6b=\lambda b \\
+  \end{array}
+\right.\\
+\Longrightarrow &(6-\lambda)\frac{(6-\lambda)a}{4}=4a
+\end{aligned}
+$$
+
+Then we can solve for $\lambda$,
+
+$$
+\begin{aligned} 
+(6-\lambda)\frac{(6-\lambda)a}{4}&=4a\\
+ (6-\lambda)^2&=16\\
+ 36-12\lambda+\lambda^2&=16\\
+ \lambda^2-12\lambda+20&=0\\
+(\lambda-2)(\lambda-10)&=0\\
+\lambda&=2,10
+\end{aligned}
+$$
+
+when $\lambda=10$, given that $v^Tv-1=0$, we can obtain the corresponding  $v_{1*}$,
+$$
+\begin{aligned} 
+&\left\{
+\begin{array} {c}  
+    6a-4b=10 a \\  
+    -4a+6b=10 b \\
+    a^2+b^2=1
+  \end{array}
+\right.
+\Longrightarrow 
+\left\{
+\begin{array} {c}  
+    a=-\sqrt{0.5}\\
+    b=\sqrt{0.5}
+  \end{array}
+\right.
+\text{or}
+\left\{
+\begin{array} {c}  
+    a=\sqrt{0.5}\\
+    b=-\sqrt{0.5}
+  \end{array}
+\right.
+\Longrightarrow v=
+\left(                 
+  \begin{array}{c}   
+    \sqrt{0.5} \\  
+    -\sqrt{0.5} \\
+  \end{array}
+\right)\text{or}
+\left(                 
+  \begin{array}{c}   
+    -\sqrt{0.5} \\  
+    \sqrt{0.5} \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+Since $\left( \begin{array}{c} -\sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$ and $\left( \begin{array}{c} \sqrt{0.5} \\ -\sqrt{0.5} \\ \end{array} \right)$ are same vector with opposite direction, Without loss of generality, we only keep $\left( \begin{array}{c} -\sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$.
+
+when $\lambda=2$, given that $v^Tv-1=0$, we can obtain the corresponding $v_{2*}$,
+
+$$
+\begin{aligned} 
+&\left\{
+\begin{array} {c}  
+    6a-4b=2 a \\  
+    -4a+6b=2 b \\
+    a^2+b^2=1
+  \end{array}
+\right.
+\Longrightarrow 
+\left\{
+\begin{array} {c}  
+    a=\sqrt{0.5}\\
+    b=\sqrt{0.5}
+  \end{array}
+\right.
+\text{or}
+\left\{
+\begin{array} {c}  
+    a=-\sqrt{0.5}\\
+    b=-\sqrt{0.5}
+  \end{array}
+\right.
+\Longrightarrow v=
+\left(                 
+  \begin{array}{c}   
+    \sqrt{0.5} \\  
+    \sqrt{0.5} \\
+  \end{array}
+\right)\text{or}
+\left(                 
+  \begin{array}{c}   
+    -\sqrt{0.5} \\  
+    -\sqrt{0.5} \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+Since $\left( \begin{array}{c} \sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$ and $\left( \begin{array}{c} -\sqrt{0.5} \\ -\sqrt{0.5} \\ \end{array} \right)$ are same vector with opposite direction, Without loss of generality, we only keep $\left( \begin{array}{c} \sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$.
+
+plug $v_{1*},v_{2*}$ in the original equation $v^TX^TXv$, we found that, $v_{1*}$ generate a larger value 10. Thus we know that $X$ has 2 PCs and the first and second PC loading is $\left(\begin{array}{c} -\sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$ and $\left(\begin{array}{c} \sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$, respectively.
+
+We can have 2 PCs by calculating $Xv$,
+```{r}
+df <- matrix(c(0,-2,1,1,1,1,-2,0),ncol=2)
+df %*% matrix(c(-1,1,1,1)*sqrt(0.5),ncol=2)
+```
+
+### c.
+
+We can calculate the eigenvalues and eigenvectors directly. Define eigenvalue $\lambda$ for $X^TX$, we have,
+
+$$
+\begin{aligned} 
+|X^TX-\lambda I|=0\\
+\Longrightarrow |\left(                 
+  \begin{array}{cc}   
+    6-\lambda&-4 \\  
+    -4&6-\lambda \\
+  \end{array}
+\right)|=0\\
+(6-\lambda)^2-16=0\\
+\lambda^2-12\lambda+20=0\\
+(\lambda-2)(\lambda-10)=0\\
+\lambda=2,10
+\end{aligned}
+$$
+Since $10>2$, we know that $\lambda_1=10,\lambda_2=2$. Then we can calculate the corresponding eigenvectors $v_1,v_2$, given the constraint $v^Tv=1$
+
+$$
+\begin{aligned} 
+\left(                 
+  \begin{array}{cc}   
+    6-10&-4 \\  
+    -4&6-10 \\
+  \end{array}
+\right)v_1&=0\\
+\left(                 
+  \begin{array}{cc}   
+    -4&-4 \\  
+    -4&-4 \\
+  \end{array}
+\right)v_1&=0\Longrightarrow v_1=\left(\begin{array}{c} -\sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right) \text{or} \left(\begin{array}{c} \sqrt{0.5} \\ -\sqrt{0.5} \\ \end{array} \right)\\
+\left(                 
+  \begin{array}{cc}   
+    6-2&-4 \\  
+    -4&6-2 \\
+  \end{array}
+\right)v_2&=0\\
+\left(                 
+  \begin{array}{cc}   
+    4&-4 \\  
+    -4&4 \\
+  \end{array}
+\right)v_2&=0\Longrightarrow v_2=\left(\begin{array}{c} \sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right) \text{or} \left(\begin{array}{c} -\sqrt{0.5} \\ -\sqrt{0.5} \\ \end{array} \right)
+\end{aligned}
+$$
+Without loss of generality, we only keep $v_1=\left( \begin{array}{c} -\sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$ and $v_2=\left( \begin{array}{c} \sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)$ as two PC loading. This results is consistent with (b). 
+
+Then we can see,
+
+$$
+\begin{aligned} 
+v_1v_2=\left( \begin{array}{c} -\sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)\left( \begin{array}{c} \sqrt{0.5} \\ \sqrt{0.5} \\ \end{array} \right)=-0.5+0.5=0
+\end{aligned}
+$$
+which means that eigenvectors (corresponding to two different eigenvalue) are orthogonal.
+
+Then we can calculate,
+
+$$
+\begin{aligned} 
+d_1&=\sqrt{\lambda_1}=\sqrt{10}\\
+u_1&=\frac{1}{d_1}Xv_1=\frac{\sqrt{20}}{20}\left(                 
+  \begin{array}{c}   
+    1 \\  
+    3 \\
+    -3 \\
+    -1 \\
+  \end{array}
+\right)\\
+d_2&=\sqrt{\lambda_2}=\sqrt{2}\\
+u_2&=\frac{1}{d_2}Xv_2=\frac{1}{2}\left(                 
+  \begin{array}{c}   
+    1 \\  
+    -1 \\
+    -1 \\
+    1 \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+Then we can get PCs,
+
+$$
+\begin{aligned} 
+PC_1&=u_1d_1=\frac{\sqrt{2}}{2}\left(                 
+  \begin{array}{c}   
+    1 \\  
+    3 \\
+    -3 \\
+    -1 \\
+  \end{array}
+\right)\\
+PC_2&=u_2d_2=\frac{\sqrt{2}}{2}\left(                 
+  \begin{array}{c}   
+    1 \\  
+    -1 \\
+    -1 \\
+    1 \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+
+Finally we can get the SVD for $X$,
+
+$$
+\begin{aligned} 
+X=UDV^T=\left(                 
+  \begin{array}{cc}   
+    \frac{\sqrt{20}}{20} & \frac{1}{2} \\  
+    \frac{3\sqrt{20}}{20} & -\frac{1}{2} \\
+    -\frac{3\sqrt{20}}{20} & -\frac{1}{2} \\
+    -\frac{\sqrt{20}}{20} & \frac{1}{2} \\
+  \end{array}
+\right)
+\left(                 
+  \begin{array}{cc}   
+    \sqrt{10} & 0 \\  
+    0 & \sqrt{2} \\
+  \end{array}
+\right)
+\left(                 
+  \begin{array}{cc}   
+    -\sqrt{0.5} & \sqrt{0.5} \\  
+    \sqrt{0.5} & \sqrt{0.5}\\
+  \end{array}
+\right)
+\end{aligned}
+$$
+
+
+### d. 
+
+To find the best 1-dimensional subspace (line) for approximating the sample points, we need to make $X\alpha$ has the largest variance. We will choose the first column
+of V as $\alpha$. Then we get,
+
+$$
+\begin{aligned} 
+X\alpha=\left(                 
+  \begin{array}{cc}   
+    0&1 \\  
+    -2&1 \\
+    1&-2 \\
+    1&0 \\
+  \end{array}
+\right)\left(                 
+  \begin{array}{c}   
+    -\sqrt{0.5} \\  
+    \sqrt{0.5} \\
+  \end{array}
+\right)=\sqrt{0.5}\left(                 
+  \begin{array}{c}   
+    1 \\  
+    3 \\
+    -3 \\
+    -1 \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+Plot the samples and draw the projected line.
+```{r}
+library(ggplot2)
+df <- rbind(data.frame(x=c(0,-2,1,1),y=c(1,1,-2,0),type="samples"),
+            data.frame(x=c(1,3,-3,-1)*sqrt(0.5),y=c(0,0,0,0),type="projected"))
+ggplot()+
+  geom_point(data=df, aes(x=x,y=y,color=type))+
+  geom_line(data = df%>%filter(type=="projected"), aes(x=x,y=y))+theme_bw()
+```
+
+
+### e.
+
+After projection we have, 
+$$
+\begin{aligned} 
+X\alpha=\left(                 
+  \begin{array}{cc}   
+    0 & 1 \\  
+    -2 & 1 \\
+    1 & -2 \\
+    1 & 0 \\
+  \end{array}
+\right)
+\left(                 
+  \begin{array}{cc}   
+    -\sqrt{0.5} & \sqrt{0.5} \\  
+    \sqrt{0.5} & \sqrt{0.5} \\
+  \end{array}
+\right)
+=\sqrt{0.5}
+\left(                 
+  \begin{array}{cc}   
+    1 & 1 \\  
+    3 & -1 \\
+    -3 & -1 \\
+    -1 & 1 \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+Create the PC scatter plots and argue that the PCs are the rotation of original data.
+
+```{r}
+df <- rbind(data.frame(x=c(0,0,-2,0,1,0,1,0),
+                       y=c(1,0,1,0,-2,0,0,0),
+                       type="samples"),
+            data.frame(x=c(1,0,3,0,-3,0,-1,0)*sqrt(0.5),
+                       y=c(1,0,-1,0,-1,0,1,0)*sqrt(0.5),
+                       type="projected"))
+ggplot()+
+  geom_path(data=df, aes(x=x,y=y,color=type))+
+  geom_point(aes(x=0,y=0,color="origin point"))+
+  theme_bw()
+```
+After connecting all sample points and projected points with the original point, it is easy to see that PCs are the rotation of original data.
+
+
+### f.
+
+Since we know that the matrix after projection has independent columns, we know the rank-1 approximation is the matrix with one column. According to the (e) we know that,
+
+$$
+\begin{aligned} 
+\hat{X}=\sqrt{0.5}\left(                 
+  \begin{array}{cc}   
+    1 \\  
+    3 \\
+    -3 \\
+    -1 \\
+  \end{array}
+\right)
+\end{aligned}
+$$
+```{r}
+df <- data.frame(dim1=c(1,3,-3,-1)*sqrt(0.5),dim2=c(1,-1,-1,1)*sqrt(0.5))
+(vars <- apply(df, 2, var))
+vars/sum(vars)
+```
+
+It accounts for 83.3% variance among the original data
+
+### g.
+
+```{r}
+df_ns <- data.frame(dim1=c(1,-1,2,2),dim2=c(20,20,-10,10)) %>% scale(scale = FALSE)
+df_s <- data.frame(dim1=c(1,-1,2,2),dim2=c(20,20,-10,10)) %>% scale(scale = TRUE)
+```
+
+Calculate the first PC of $X_0^{'}$,
+```{r}
+# un-scaled
+svd(df_ns)$u[,1]*svd(df_ns)$d[1]
+# scaled
+svd(df_s)$u[,1]*svd(df_ns)$d[1]
+```
+Calculate the first PC loading of $X_0^{'}$,
+```{r}
+# un-scaled
+svd(df_ns)$v[,1]
+# scaled
+svd(df_s)$v[,1]
+```
+As we can tell from the results, after scaling, the first PC and PC loading seems more balanced.
+
+Test the effect of scale,
+```{r}
+# un-scaled data
+res.pca <- prcomp(df_ns)
+vars <- apply(res.pca$x, 2, var)
+# first PC accounts for 99.5% variance
+vars/sum(vars)
+
+# scaled data
+res.pca <- prcomp(df_s)
+vars <- apply(res.pca$x, 2, var)
+# first PC accounts for 83.3% variance
+vars/sum(vars)
+```
+
+When performing Principal Component Analysis(PCA), scaling is important. PCA tries to get the features with maximum variance and the variance is high for high magnitude features. If we do not scale the data, PCA will skew towards high magnitude features.
